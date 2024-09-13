@@ -22,7 +22,7 @@ route.post("/add", upload.single("cover_img"), expressJoi(add_article_schema), a
 
 route.get("/getAll", upload.single("cover_img"), articleHandler.getArticle);
 
-route.get("/list", upload.single("cover_img"), expressJoi(get_article_list_schema), articleHandler.getArticleList);
+route.get("/list", upload.single("cover_img"), articleHandler.getArticleList);
 
 route.post("/getById", upload.single("cover_img"), expressJoi(get_article_schema), articleHandler.getArticleById);
 

@@ -50,32 +50,41 @@ exports.getArticle = (req, res) => {
 exports.getArticleList = (req, res) => {
     // 获取文章列表数据
     // let sql = `select * from ev_articles where is_delete = 0`;
-     console.log(req);
-
+    //  console.log(req);
+    let total_count = 0;
     let sql = `select ea.id ,ea.title ,ea.pub_date ,ea.state ,eac.name as cate_name from ev_articles ea
                 left join ev_article_cate eac
                 on ea.cate_id = eac.id 
                 where ea.is_delete = 0
                 and eac.is_delete = 0`;
     if (req.query.cate_id) {
-        sql += ` and ea.cate_id = ${req.query.cate_id}`;
+        sql += ` and ea.cate_id = '${req.query.cate_id}'`;
     }
     if (req.query.state) {
-        sql += ` and ea.state = ${req.query.state}`;
+        sql += ` and ea.state = '${req.query.state}'`;
     }
-    let offset = (req.query.pagenum - 1) * req.query.pagesize;
-    sql += ` order by ea.pub_date desc limit ${offset}, ${req.query.pagesize}`;
+
     db.query(sql, (err, results) => {
         if (err) return res.cc(err);
-
-        res.send({
-            status: 0,
-            message: "获取文章列表数据成功！",
-            data: results,
-            total: results.length,
-
+        total_count = results.length;
+        let offset = (req.query.pagenum - 1) * req.query.pagesize;
+        sql += ` order by ea.pub_date desc limit ${offset}, ${req.query.pagesize}`;
+    
+        // console.log(sql);
+        
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err);
+    
+            res.send({
+                status: 0,
+                message: "获取文章列表数据成功！",
+                data: results,
+                total: total_count,
+            })
         })
     })
+
+   
 };
 
 exports.getArticleById = (req, res) => {

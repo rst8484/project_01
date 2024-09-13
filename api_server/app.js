@@ -42,7 +42,7 @@ app.use((req, res, next) => {
         req.body = req.body || {};
         // 将 req.auth.id 的值复制到 req.body.id
         req.body.user_id = req.auth.id;
-        console.log(req);
+        // console.log(req);
     }
     next();
 });

@@ -7,6 +7,7 @@ const { query } = require('express');
 const id = Joi.string().required();
 const title = Joi.string().required();
 const cate_id = Joi.string().required();
+
 const content = Joi.string().required().allow("");
 const state = Joi.string().valid("已发布", "草稿").required();
 
@@ -49,6 +50,8 @@ const get_article_list_schema = {
     query: {
         pagenum,
         pagesize,
+        cate_id: Joi.string(),
+        state: Joi.string().valid("已发布", "草稿"),
     }
 }
 
